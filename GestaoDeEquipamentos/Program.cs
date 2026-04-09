@@ -1,6 +1,7 @@
 ﻿using System.Xml.Serialization;
 using System.Text.Json;
 using System.IO;
+using System.Threading;
 class Program
 {
 
@@ -113,6 +114,9 @@ class Program
                     if (!usuarioEncontrado)
                     {
                         Console.WriteLine("Usuário ou senha incorretos.");
+                        Thread.Sleep(3000);
+                        while (Console.KeyAvailable) Console.ReadKey(true);
+                        Console.Clear();
                     }
                 }
                 else if (opcao == 2)
@@ -148,7 +152,7 @@ class Program
                         Console.Clear();
                         Console.WriteLine("Cadastrar equipamento");
                         verifica = usuarioLogado.CadastrarEquipamento();
-                        if(verifica == true)
+                        if (verifica == true)
                         {
                             AtualizarUsuario(usuarioLogado);
                         }
@@ -157,7 +161,7 @@ class Program
                         Console.Clear();
                         Console.WriteLine("Editar equipamento");
                         verifica = usuarioLogado.EditarEquipamento();
-                        if(verifica == true)
+                        if (verifica == true)
                         {
                             AtualizarUsuario(usuarioLogado);
                         }
@@ -166,7 +170,7 @@ class Program
                         Console.Clear();
                         Console.WriteLine("Excluir equipamento");
                         verifica = usuarioLogado.ExcluirEquipamento();
-                        if(verifica == true)
+                        if (verifica == true)
                         {
                             AtualizarUsuario(usuarioLogado);
                         }

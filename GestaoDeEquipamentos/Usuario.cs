@@ -15,17 +15,31 @@ class Usuario
 
     public Usuario()
     {
-
+        
     }
+
+    public string Nome { get => getNome(); set => setNome(value); }
+    public string Senha { get => getSenha(); set => setSenha(value); }
+    public List<Equipamentos> Equipamentos { get => getEquipamentos(); set => setEquipamentos(value); }
 
     public string getNome()
     {
         return nome;
     }
 
+    public void setNome(string nome)
+    {
+        this.nome = nome;
+    }
+
     public string getSenha()
     {
         return senha;
+    }
+
+    public void setSenha(string senha)
+    {
+        this.senha = senha;
     }
     public List<Equipamentos> getEquipamentos()
     {
@@ -162,7 +176,6 @@ class Usuario
         }
 
     }
-
     public bool ExcluirEquipamento()
     {
         MostrarEquipamentos();

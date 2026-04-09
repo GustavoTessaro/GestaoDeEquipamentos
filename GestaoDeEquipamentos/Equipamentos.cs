@@ -16,6 +16,12 @@ class Equipamentos
         this.dataFabricacao = dataFabricacao;
     }
 
+    public int Id { get => getID(); set => setID(value); }
+    public string Nome { get => getNome(); set => setNome(value); }
+    public float Preco { get => getPreco(); set => setPreco(value); }
+    public string Fabricante { get => getFabricante(); set => setFabricante(value); }
+    public DateTime DataFabricacao { get => getDataFabricacao(); set => setDataFabricacao(value); }
+
     public int getID()
     {
         return ID;
