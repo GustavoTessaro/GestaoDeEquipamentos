@@ -96,9 +96,9 @@ class Program
                 if (opcao == 1)
                 {
                     Console.WriteLine("Digite o nome do usuário:");
-                    nome = Console.ReadLine();
+                    nome = Console.ReadLine() ?? "";
                     Console.WriteLine("Digite a senha do usuário:");
-                    senha = Console.ReadLine();
+                    senha = Console.ReadLine() ?? "";
 
                     usuarioEncontrado = false;
                     foreach (var usuario in usuarios)
@@ -122,9 +122,9 @@ class Program
                 else if (opcao == 2)
                 {
                     Console.WriteLine("Digite o nome do usuário:");
-                    nome = Console.ReadLine();
+                    nome = Console.ReadLine() ?? "";
                     Console.WriteLine("Digite a senha do usuário:");
-                    senha = Console.ReadLine();
+                    senha = Console.ReadLine() ?? "";
                     Usuario novoUsuario = new Usuario(nome, senha);
                     usuarios.Add(novoUsuario);
                     salvarUsuario(usuarios);

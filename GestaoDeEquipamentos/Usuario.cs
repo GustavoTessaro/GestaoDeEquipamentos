@@ -15,7 +15,9 @@ class Usuario
 
     public Usuario()
     {
-        
+        this.nome = "";
+        this.senha = "";
+        this.equipamentos = new List<Equipamentos>();
     }
 
     public string Nome { get => getNome(); set => setNome(value); }
