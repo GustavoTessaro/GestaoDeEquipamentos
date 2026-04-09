@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading;
 class Program
 {
-
+    static string nomeArquivo = "usuario.json";
     public static void salvarUsuario(List<Usuario> usuario)
     {
         string jsonString = JsonSerializer.Serialize(usuario, new JsonSerializerOptions { WriteIndented = true });
@@ -19,7 +19,6 @@ class Program
         }
         return new List<Usuario>();
     }
-    static string nomeArquivo = "usuario.json";
     static void AtualizarUsuario(Usuario usuarioLogado)
     {
         List<Usuario> usuarios = lerUsuarios(new List<Usuario>());

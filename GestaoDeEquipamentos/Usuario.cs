@@ -6,6 +6,7 @@ class Usuario
 
     private List<Equipamentos> equipamentos;
 
+#region Construtores, Getters e Setters
     public Usuario(string nome, string senha)
     {
         this.nome = nome;
@@ -43,14 +44,20 @@ class Usuario
     {
         this.senha = senha;
     }
+    
     public List<Equipamentos> getEquipamentos()
     {
         return equipamentos;
     }
+    
     public void setEquipamentos(List<Equipamentos> equipamentos)
     {
         this.equipamentos = equipamentos;
     }
+
+    #endregion
+
+    #region Métodos para gerenciamento de equipamentos
     public bool CadastrarEquipamento()
     {
         int id = 0;
@@ -207,4 +214,6 @@ class Usuario
             return false;
         }
     }
+
+    #endregion
 }
