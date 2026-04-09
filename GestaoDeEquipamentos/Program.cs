@@ -125,6 +125,15 @@ class Program
                     nome = Console.ReadLine() ?? "";
                     Console.WriteLine("Digite a senha do usuário:");
                     senha = Console.ReadLine() ?? "";
+
+                    if(nome == "" || senha == "")
+                    {
+                        Console.WriteLine("Nome e senha não podem ser vazios.");
+                        Thread.Sleep(3000);
+                        while (Console.KeyAvailable) Console.ReadKey(true);
+                        Console.Clear();
+                        continue;
+                    }
                     Usuario novoUsuario = new Usuario(nome, senha);
                     usuarios.Add(novoUsuario);
                     salvarUsuario(usuarios);
