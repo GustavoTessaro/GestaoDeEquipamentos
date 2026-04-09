@@ -87,9 +87,10 @@ class Program
                 {
                     Console.WriteLine("1 - Fazer login");
                     Console.WriteLine("2 - Cadastrar novo usuário");
+                    Console.WriteLine("3 - Sair");
                     Console.Write("Escolha uma opção: ");
                     opcao = (int)char.GetNumericValue(Console.ReadKey(true).KeyChar);
-                } while (opcao != 1 && opcao != 2);
+                } while (opcao != 1 && opcao != 2 && opcao != 3);
 
                 if (opcao == 1)
                 {
@@ -125,6 +126,11 @@ class Program
                     salvarUsuario(usuarios);
                     Console.WriteLine("Usuário cadastrado com sucesso!");
                 }
+                else if (opcao == 3)
+                {
+                    Console.WriteLine("Encerrando o programa...");
+                    System.Environment.Exit(0);
+                }
             }
 
             opcao = 0;
@@ -134,31 +140,41 @@ class Program
                 MostrarMenu();
                 opcao = (int)char.GetNumericValue(Console.ReadKey(true).KeyChar);
 
+                bool verifica = true;
+
                 switch (opcao)
                 {
                     case 1:
                         Console.Clear();
                         Console.WriteLine("Cadastrar equipamento");
-                        usuarioLogado.CadastrarEquipamento();
-                        AtualizarUsuario(usuarioLogado);
+                        verifica = usuarioLogado.CadastrarEquipamento();
+                        if(verifica == true)
+                        {
+                            AtualizarUsuario(usuarioLogado);
+                        }
                         break;
                     case 2:
                         Console.Clear();
                         Console.WriteLine("Editar equipamento");
-                        usuarioLogado.EditarEquipamento();
-                        AtualizarUsuario(usuarioLogado);
+                        verifica = usuarioLogado.EditarEquipamento();
+                        if(verifica == true)
+                        {
+                            AtualizarUsuario(usuarioLogado);
+                        }
                         break;
                     case 3:
                         Console.Clear();
                         Console.WriteLine("Excluir equipamento");
-                        usuarioLogado.ExcluirEquipamento();
-                        AtualizarUsuario(usuarioLogado);
+                        verifica = usuarioLogado.ExcluirEquipamento();
+                        if(verifica == true)
+                        {
+                            AtualizarUsuario(usuarioLogado);
+                        }
                         break;
                     case 4:
                         Console.Clear();
                         Console.WriteLine("Visualizar equipamentos");
                         usuarioLogado.MostrarEquipamentos();
-                        AtualizarUsuario(usuarioLogado);
                         break;
                     case 5:
                         Console.Clear();

@@ -35,25 +35,50 @@ class Usuario
     {
         this.equipamentos = equipamentos;
     }
-    public void CadastrarEquipamento()
+    public bool CadastrarEquipamento()
     {
-        Console.Write("Digite o ID do equipamento (APENAS NUMEROS): ");
-        int id = int.Parse(Console.ReadLine());
-        Console.Write("Digite o nome do equipamento: ");
-        string nome = Console.ReadLine();
-        Console.Write("\nDigite o preço do equipamento: ");
-        float preco = float.Parse(Console.ReadLine());
-        Console.Write("\nDigite o fabricante do equipamento: ");
-        string fabricante = Console.ReadLine();
-        Console.Write("\nDigite a data de fabricação do equipamento (dd/MM/yyyy): ");
-        DateTime dataFabricacao = DateTime.ParseExact(Console.ReadLine(), "dd/MM/yyyy", null);
+        int id = 0;
+        string nome = "";
+        float preco = 0;
+        string fabricante = "";
+        DateTime dataFabricacao = DateTime.Now;
 
-        Equipamentos novoEquipamento = new Equipamentos(id, nome, preco, fabricante, dataFabricacao);
+        bool verifica = true;
 
-        equipamentos.Add(novoEquipamento);
-        Console.WriteLine("Equipamento cadastrado com sucesso!");
+        try
+        {
+            Console.Write("Digite o ID do equipamento (APENAS NUMEROS): ");
+            id = int.Parse(Console.ReadLine());
+            Console.Write("Digite o nome do equipamento: ");
+            nome = Console.ReadLine();
+            Console.Write("\nDigite o preço do equipamento: ");
+            preco = float.Parse(Console.ReadLine());
+            Console.Write("\nDigite o fabricante do equipamento: ");
+            fabricante = Console.ReadLine();
+            Console.Write("\nDigite a data de fabricação do equipamento (dd/MM/yyyy): ");
+            dataFabricacao = DateTime.ParseExact(Console.ReadLine(), "dd/MM/yyyy", null);
+        }
+        catch (System.Exception)
+        {
+            Console.WriteLine("Entrada inválida. Certifique-se de inserir os dados corretamente.");
+            verifica = false;
+        }
+
+        if (verifica == true)
+        {
+            Equipamentos novoEquipamento = new Equipamentos(id, nome, preco, fabricante, dataFabricacao);
+
+            equipamentos.Add(novoEquipamento);
+            Console.WriteLine("Equipamento cadastrado com sucesso!");
+            return true;
+        }
+        else
+        {
+            Console.WriteLine("Falha ao cadastrar o equipamento. Tente novamente.");
+            return false;
+        }
+
     }
-
     public void MostrarEquipamentos()
     {
         if (equipamentos.Count == 0)
@@ -69,7 +94,7 @@ class Usuario
             }
         }
     }
-    public void EditarEquipamento()
+    public bool EditarEquipamento()
     {
         MostrarEquipamentos();
         Console.Write("\nDigite o ID do equipamento que deseja editar: ");
@@ -87,30 +112,58 @@ class Usuario
 
         if (equipamentoEncontrado != null)
         {
-            Console.Write("Digite o novo nome do equipamento: ");
-            string nome = Console.ReadLine();
-            Console.Write("\nDigite o novo preço do equipamento: ");
-            float preco = float.Parse(Console.ReadLine());
-            Console.Write("\nDigite o novo fabricante do equipamento: ");
-            string fabricante = Console.ReadLine();
-            Console.Write("\nDigite a nova data de fabricação do equipamento (dd/MM/yyyy): ");
-            DateTime dataFabricacao = DateTime.ParseExact(Console.ReadLine(), "dd/MM/yyyy", null);
 
-            equipamentoEncontrado.setNome(nome);
-            equipamentoEncontrado.setPreco(preco);
-            equipamentoEncontrado.setFabricante(fabricante);
-            equipamentoEncontrado.setDataFabricacao(dataFabricacao);
+            bool verifica = true;
 
-            Console.WriteLine("Equipamento editado com sucesso!");
+            string nome = "";
+            float preco = 0;
+            string fabricante = "";
+            DateTime dataFabricacao = DateTime.Now;
+
+            try
+            {
+                Console.Write("Digite o novo nome do equipamento: ");
+                nome = Console.ReadLine();
+                Console.Write("\nDigite o novo preço do equipamento: ");
+                preco = float.Parse(Console.ReadLine());
+                Console.Write("\nDigite o novo fabricante do equipamento: ");
+                fabricante = Console.ReadLine();
+                Console.Write("\nDigite a nova data de fabricação do equipamento (dd/MM/yyyy): ");
+                dataFabricacao = DateTime.ParseExact(Console.ReadLine(), "dd/MM/yyyy", null);
+            }
+            catch (System.Exception)
+            {
+                Console.WriteLine("Entrada inválida. Certifique-se de inserir os dados corretamente.");
+                verifica = false;
+            }
+
+            if (verifica == true)
+            {
+                equipamentoEncontrado.setNome(nome);
+                equipamentoEncontrado.setPreco(preco);
+                equipamentoEncontrado.setFabricante(fabricante);
+                equipamentoEncontrado.setDataFabricacao(dataFabricacao);
+
+                Console.WriteLine("Equipamento editado com sucesso!");
+
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Falha ao editar o equipamento. Tente novamente.");
+                return false;
+            }
+
         }
         else
         {
             Console.WriteLine("Equipamento não encontrado.");
+            return false;
         }
 
     }
 
-    public void ExcluirEquipamento()
+    public bool ExcluirEquipamento()
     {
         MostrarEquipamentos();
         Console.Write("\nDigite o ID do equipamento que deseja excluir: ");
@@ -130,10 +183,13 @@ class Usuario
         {
             equipamentos.Remove(equipamentoEncontrado);
             Console.WriteLine("Equipamento excluído com sucesso!");
+            return true;
+
         }
         else
         {
             Console.WriteLine("Equipamento não encontrado.");
+            return false;
         }
     }
 }
