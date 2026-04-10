@@ -1,59 +1,180 @@
-# Gestão de Equipamentos
+# 📦 Sistema de Gestão de Equipamentos (C#)
 
-Este projeto em C# é um sistema simples de gerenciamento de equipamentos com autenticação de usuários e armazenamento de dados em arquivo JSON.
+## 📖 Descrição
+Este projeto é um sistema de console desenvolvido em C# para **gerenciamento de equipamentos e manutenções**.  
+Ele permite cadastrar usuários, realizar login e controlar equipamentos associados a cada usuário, além de registrar manutenções.
 
-## Estrutura do projeto
+Os dados são persistidos em um arquivo **JSON (`usuario.json`)**, garantindo armazenamento simples e eficiente.
 
-- `GestaoDeEquipamentos/Program.cs`
-  - Contém o ponto de entrada do programa.
-  - Gerencia o fluxo de login, cadastro de usuários e o menu de operações.
-  - Lê e grava usuários em `usuario.json` usando serialização JSON.
+---
 
-- `GestaoDeEquipamentos/Usuario.cs`
-  - Define a classe `Usuario` com nome, senha e uma lista de equipamentos.
-  - Implementa ações de usuário como cadastrar, editar, excluir e mostrar equipamentos.
+## 🚀 Funcionalidades
 
-- `GestaoDeEquipamentos/Equipamentos.cs`
-  - Define a classe `Equipamentos` com propriedades: ID, nome, preço, fabricante e data de fabricação.
-  - Fornece getters e setters para cada campo.
+### 👤 Usuários
+- Cadastro de novos usuários
+- Login com nome e senha
+- Persistência em arquivo JSON
 
-## Como funciona
+### 🖥️ Equipamentos
+- Cadastrar equipamento
+- Editar equipamento
+- Excluir equipamento
+- Visualizar equipamentos
 
-1. Ao iniciar o programa, o usuário escolhe entre:
-   - Fazer login
-   - Cadastrar novo usuário
+### 🔧 Manutenções
+- Cadastrar manutenção
+- Editar manutenção
+- Excluir manutenção
+- Visualizar manutenções
+- Verificação automática de manutenção (a cada 180 dias)
+
+---
+
+## 💾 Persistência de Dados
+
+O sistema utiliza:
+```csharp
+System.Text.Json
+```
+
+### Métodos principais:
+- `salvarUsuario()` → salva os dados no arquivo JSON
+- `lerUsuarios()` → lê os dados do arquivo JSON
+- `AtualizarUsuario()` → atualiza dados do usuário após alterações
+
+---
+
+## 🧠 Estrutura do Sistema
+
+### 🔹 Classe `Program`
+Responsável por:
+- Controle do fluxo do sistema
+- Menus principais
+- Login e cadastro
+- Navegação entre funcionalidades
+
+---
+
+### 🔹 Classe `Usuario`
+
+Representa um usuário do sistema.
+
+#### Atributos:
+- `nome`
+- `senha`
+- `equipamentos`
+- `manutencoes`
+
+#### Métodos principais:
+
+##### Equipamentos
+- `CadastrarEquipamento()`
+- `EditarEquipamento()`
+- `ExcluirEquipamento()`
+- `MostrarEquipamentos()`
+
+##### Manutenções
+- `CadastrarManutencao()`
+- `EditarManutencao()`
+- `ExcluirManutencao()`
+- `MostrarManutencoes()`
+
+##### Extra
+- `VerificarManutencoes()` → verifica automaticamente equipamentos sem manutenção há mais de 180 dias
+
+---
+
+### 🔹 Classe `Equipamento`
+
+Representa um equipamento cadastrado.
+
+#### Atributos:
+- `ID`
+- `nome`
+- `preco`
+- `fabricante`
+- `dataFabricacao`
+- `EstaEmManutencao`
+- `ultimaVezManutencao`
+
+---
+
+### 🔹 Classe `ManutencaoEquipamento`
+
+Herda de `Equipamento`.
+
+#### Atributos adicionais:
+- `titulo`
+- `descricao`
+- `dataAbertura`
+- `diasDesdeAbertura`
+
+#### Método:
+- `CalcularDiasDesdeAbertura()`
+
+---
+
+## 📋 Fluxo do Sistema
+
+1. Usuário inicia o programa
+2. Escolhe:
+   - Login
+   - Cadastro
    - Sair
-
-2. Após o login, o usuário vê um menu de gestão de equipamentos com opções:
-   - Cadastrar equipamento
-   - Editar equipamento
-   - Excluir equipamento
-   - Visualizar equipamentos
+3. Após login:
+   - Menu Equipamentos
+   - Menu Manutenção
    - Logout
+4. Sistema salva automaticamente alterações
 
-3. Cada usuário tem seu próprio conjunto de equipamentos.
-   - As alterações de equipamentos são salvas no arquivo `usuario.json`.
-   - O sistema atualiza os dados do usuário autenticado sempre que um equipamento é cadastrado, editado ou excluído.
+---
 
-## Recursos principais
+## ⚠️ Tratamento de Erros
 
-- Login e cadastro de usuário.
-- Persistência de dados em arquivo JSON (`usuario.json`).
-- Cadastro de equipamentos com validação de entrada.
-- Edição e exclusão por ID do equipamento.
-- Visualização de todos os equipamentos cadastrados pelo usuário.
+O sistema utiliza `try/catch` para evitar falhas em:
+- Entrada de dados inválidos
+- Conversões (int, float, DateTime)
 
-## Execução
+---
 
-1. Abra o projeto no Visual Studio ou outro editor C# compatível.
-2. Compile a solução `GestaoDeEquipamentos.slnx`.
-3. Execute o projeto `GestaoDeEquipamentos`.
+## 📁 Estrutura de Arquivos
 
-O programa roda em console e interage com o usuário por meio de entradas de texto.
+```
+📦 Projeto
+ ┣ 📜 Program.cs
+ ┣ 📜 usuario.json
+ ┗ 📜 README.md
+```
 
-## Observações
+---
 
-- O arquivo `usuario.json` é criado na mesma pasta onde o programa é executado.
-- Ao cadastrar um usuário, o sistema salva imediatamente os dados.
-- A edição e exclusão de equipamento usam o `ID` informado pelo usuário.
-- Se a entrada for inválida durante cadastro ou edição, o programa exibe uma mensagem de erro e pede nova tentativa.
+## ▶️ Como Executar
+
+1. Compile o projeto:
+```bash
+dotnet build
+```
+
+2. Execute:
+```bash
+dotnet run
+```
+
+---
+
+## 💡 Observações
+
+- IDs de equipamentos e manutenções são inseridos manualmente
+- O sistema roda totalmente no console
+- Não utiliza banco de dados, apenas JSON
+
+---
+
+## 📌 Possíveis Melhorias
+
+- Validação mais robusta de entradas
+- Interface gráfica (GUI)
+- Banco de dados (SQL)
+- Sistema de autenticação mais seguro
+- Geração automática de IDs
+
