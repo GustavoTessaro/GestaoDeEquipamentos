@@ -28,13 +28,14 @@ class Program
             if (usuario.getNome() == usuarioLogado.getNome() && usuario.getSenha() == usuarioLogado.getSenha())
             {
                 usuario.setEquipamentos(usuarioLogado.getEquipamentos());
+                usuario.setManutencoes(usuarioLogado.Manutencoes);
                 break;
             }
         }
 
         salvarUsuario(usuarios);
     }
-    static void MostrarMenu()
+    static void MostrarMenuEquipamentos()
     {
         Console.WriteLine("---------------------------------");
         Console.WriteLine("Gestão de Equipamentos");
@@ -43,7 +44,29 @@ class Program
         Console.WriteLine("2 - Editar equipamento");
         Console.WriteLine("3 - Excluir equipamento");
         Console.WriteLine("4 - Visualizar equipamentos");
-        Console.WriteLine("S - Logout");
+        Console.WriteLine("5 - Voltar");
+        Console.WriteLine("---------------------------------");
+    }
+    static void MostrarMenuManutencao()
+    {
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("Gestão de Manutenção");
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("1 - Cadastrar manutenção");
+        Console.WriteLine("2 - Editar manutenção");
+        Console.WriteLine("3 - Excluir manutenção");
+        Console.WriteLine("4 - Visualizar manutenções");
+        Console.WriteLine("5 - Voltar");
+        Console.WriteLine("---------------------------------");
+    }
+    static void MostrarMenu()
+    {
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("Gestão de Equipamentos");
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("1 - Menu Equipamentos");
+        Console.WriteLine("2 - Menu Manutenção");
+        Console.WriteLine("3 - Logout");
         Console.WriteLine("---------------------------------");
     }
     static bool VoltarMenuInicial()
@@ -83,6 +106,8 @@ class Program
 
             while (usuarioEncontrado == false)
             {
+                #region MenuLoginECadastro
+
                 do
                 {
                     Console.WriteLine("1 - Fazer login");
@@ -125,7 +150,7 @@ class Program
                     Console.WriteLine("Digite a senha do usuário:");
                     senha = Console.ReadLine() ?? "";
 
-                    if(nome == "" || senha == "")
+                    if (nome == "" || senha == "")
                     {
                         Console.WriteLine("Nome e senha não podem ser vazios.");
                         Thread.Sleep(3000);
@@ -143,64 +168,168 @@ class Program
                     Console.WriteLine("Encerrando o programa...");
                     System.Environment.Exit(0);
                 }
+
+                #endregion
             }
 
-            opcao = 0;
             Console.Clear();
-            do
+
+            bool verificaAtualiza = usuarioLogado.VerificarManutencoes();
+
+            if (verificaAtualiza == true)
             {
-                MostrarMenu();
-                opcao = (int)char.GetNumericValue(Console.ReadKey(true).KeyChar);
+                AtualizarUsuario(usuarioLogado);
+            }
 
-                bool verifica = true;
+            Console.WriteLine();
 
-                switch (opcao)
+            bool repetirMenu = true;
+
+            while (repetirMenu == true)
+            {
+                do
                 {
-                    case 1:
-                        Console.Clear();
-                        Console.WriteLine("Cadastrar equipamento");
-                        verifica = usuarioLogado.CadastrarEquipamento();
-                        if (verifica == true)
-                        {
-                            AtualizarUsuario(usuarioLogado);
-                        }
-                        break;
-                    case 2:
-                        Console.Clear();
-                        Console.WriteLine("Editar equipamento");
-                        verifica = usuarioLogado.EditarEquipamento();
-                        if (verifica == true)
-                        {
-                            AtualizarUsuario(usuarioLogado);
-                        }
-                        break;
-                    case 3:
-                        Console.Clear();
-                        Console.WriteLine("Excluir equipamento");
-                        verifica = usuarioLogado.ExcluirEquipamento();
-                        if (verifica == true)
-                        {
-                            AtualizarUsuario(usuarioLogado);
-                        }
-                        break;
-                    case 4:
-                        Console.Clear();
-                        Console.WriteLine("Visualizar equipamentos");
-                        usuarioLogado.MostrarEquipamentos();
-                        break;
-                    case 5:
-                        Console.Clear();
-                        Console.WriteLine("Logout do Usuario...");
-                        break;
-                    default:
-                        Console.Clear();
-                        Console.WriteLine("Opção inválida. Tente novamente.");
-                        break;
-                }
+                    opcao = 0;
+                    MostrarMenu();
+                    opcao = (int)char.GetNumericValue(Console.ReadKey(true).KeyChar);
+                } while (opcao != 1 && opcao != 2 && opcao != 3);
 
-            } while (opcao != 5);
+                if (opcao == 1)
+                {
+                    #region MenuEquipamentos
+
+                    opcao = 0;
+                    do
+                    {
+                        MostrarMenuEquipamentos();
+                        opcao = (int)char.GetNumericValue(Console.ReadKey(true).KeyChar);
+
+                        bool verifica = true;
+
+                        switch (opcao)
+                        {
+                            case 1:
+                                Console.Clear();
+                                Console.WriteLine("Cadastrar equipamento");
+                                verifica = usuarioLogado.CadastrarEquipamento();
+                                if (verifica == true)
+                                {
+                                    AtualizarUsuario(usuarioLogado);
+                                }
+                                break;
+                            case 2:
+                                Console.Clear();
+                                Console.WriteLine("Editar equipamento");
+                                verifica = usuarioLogado.EditarEquipamento();
+                                if (verifica == true)
+                                {
+                                    AtualizarUsuario(usuarioLogado);
+                                }
+                                break;
+                            case 3:
+                                Console.Clear();
+                                Console.WriteLine("Excluir equipamento");
+                                verifica = usuarioLogado.ExcluirEquipamento();
+                                if (verifica == true)
+                                {
+                                    AtualizarUsuario(usuarioLogado);
+                                }
+                                break;
+                            case 4:
+                                Console.Clear();
+                                Console.WriteLine("Visualizar equipamentos");
+                                usuarioLogado.MostrarEquipamentos();
+                                break;
+                            case 5:
+                                Console.Clear();
+                                break;
+                            default:
+                                Console.Clear();
+                                Console.WriteLine("Opção inválida. Tente novamente.");
+                                break;
+                        }
+
+                    } while (opcao != 5);
+
+                    #endregion
+                }
+                else
+                {
+                    if (opcao == 2)
+                    {
+                        #region MenuManutencao
+
+                        opcao = 0;
+                        do
+                        {
+                            MostrarMenuManutencao();
+                            opcao = (int)char.GetNumericValue(Console.ReadKey(true).KeyChar);
+
+                            bool verifica = true;
+
+                            switch (opcao)
+                            {
+                                case 1:
+                                    Console.Clear();
+                                    Console.WriteLine("Cadastrar Manutenção");
+                                    verifica = usuarioLogado.CadastrarManutencao();
+                                    if (verifica == true)
+                                    {
+                                        AtualizarUsuario(usuarioLogado);
+                                    }
+                                    break;
+                                case 2:
+                                    Console.Clear();
+                                    Console.WriteLine("Editar Manutenção");
+                                    verifica = usuarioLogado.EditarManutencao();
+                                    if (verifica == true)
+                                    {
+                                        AtualizarUsuario(usuarioLogado);
+                                    }
+                                    break;
+                                case 3:
+                                    Console.Clear();
+                                    Console.WriteLine("Excluir Manutenção");
+                                    verifica = usuarioLogado.ExcluirManutencao();
+                                    if (verifica == true)
+                                    {
+                                        AtualizarUsuario(usuarioLogado);
+                                    }
+                                    break;
+                                case 4:
+                                    Console.Clear();
+                                    Console.WriteLine("Visualizar Manutenções");
+                                    usuarioLogado.MostrarManutencoes();
+                                    break;
+                                case 5:
+                                    Console.Clear();
+                                    break;
+                                default:
+                                    Console.Clear();
+                                    Console.WriteLine("Opção inválida. Tente novamente.");
+                                    break;
+                            }
+
+                        } while (opcao != 5);
+
+                        #endregion
+                    }
+                    else
+                    {
+                        if (opcao == 3)
+                        {
+                            Console.WriteLine("Logout realizado com sucesso!");
+                            Thread.Sleep(3000);
+                            while (Console.KeyAvailable) Console.ReadKey(true);
+                            Console.Clear();
+                            repetirMenu = false;
+                        }
+                    }
+                }
+            }
 
             continuar = VoltarMenuInicial();
+
         }
 
     }
