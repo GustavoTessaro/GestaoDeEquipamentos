@@ -14,6 +14,11 @@ class ManutencaoEquipamento : Equipamento
         this.DiasDesdeAbertura = 0;
     }
 
+    public ManutencaoEquipamento()
+    {
+        
+    }
+
     #region Getters e Setters
     public string Titulo { get => titulo; set => titulo = value; }
     public string Descricao { get => descricao ?? " "; set => descricao = value; }

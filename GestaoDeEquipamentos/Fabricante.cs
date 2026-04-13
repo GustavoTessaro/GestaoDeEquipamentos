@@ -15,7 +15,18 @@ class Fabricante
         this.quantidadeEquipamentos = 0;
     }
 
+    public Fabricante()
+    {
+
+    }
+
     #region Getters e Setters
+
+    public int Id_Salvo { get => getId(); set => setId(value); }
+    public string Nome_Salvo { get => getNome(); set => setNome(value); }
+    public string Email_Salvo { get => getEmail(); set => setEmail(value); }
+    public string Telefone_Salvo { get => getTelefone(); set => setTelefone(value); }
+    public int QuantidadeEquipamentos_Salvo { get => getQuantidadeEquipamentos(); set => setQuantidadeEquipamentos(value); }
     public int getId()
     {
         return id;

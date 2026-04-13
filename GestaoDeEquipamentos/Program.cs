@@ -29,6 +29,7 @@ class Program
             {
                 usuario.setEquipamentos(usuarioLogado.getEquipamentos());
                 usuario.setManutencoes(usuarioLogado.Manutencoes);
+                usuario.setFabricantes(usuarioLogado.Fabricantes);
                 break;
             }
         }
@@ -132,9 +133,9 @@ class Program
 
                 if (opcao == 1)
                 {
-                    Console.WriteLine("Digite o nome do usuário:");
+                    Console.Write("\nDigite o nome do usuário:");
                     nome = Console.ReadLine() ?? "";
-                    Console.WriteLine("Digite a senha do usuário:");
+                    Console.Write("\nDigite a senha do usuário:");
                     senha = Console.ReadLine() ?? "";
 
                     usuarioEncontrado = false;
@@ -142,7 +143,7 @@ class Program
                     {
                         if (usuario.getNome() == nome && usuario.getSenha() == senha)
                         {
-                            Console.WriteLine("Login bem-sucedido!");
+                            Console.WriteLine("\nLogin bem-sucedido!");
                             usuarioLogado = usuario;
                             usuarioEncontrado = true;
                             break;
@@ -150,7 +151,7 @@ class Program
                     }
                     if (!usuarioEncontrado)
                     {
-                        Console.WriteLine("Usuário ou senha incorretos.");
+                        Console.WriteLine("\nUsuário ou senha incorretos.");
                         Thread.Sleep(3000);
                         while (Console.KeyAvailable) Console.ReadKey(true);
                         Console.Clear();
@@ -158,14 +159,14 @@ class Program
                 }
                 else if (opcao == 2)
                 {
-                    Console.WriteLine("Digite o nome do usuário:");
+                    Console.Write("\nDigite o nome do usuário:");
                     nome = Console.ReadLine() ?? "";
-                    Console.WriteLine("Digite a senha do usuário:");
+                    Console.Write("\nDigite a senha do usuário:");
                     senha = Console.ReadLine() ?? "";
 
                     if (nome == "" || senha == "")
                     {
-                        Console.WriteLine("Nome e senha não podem ser vazios.");
+                        Console.WriteLine("\nNome e senha não podem ser vazios.");
                         Thread.Sleep(3000);
                         while (Console.KeyAvailable) Console.ReadKey(true);
                         Console.Clear();
@@ -174,11 +175,11 @@ class Program
                     Usuario novoUsuario = new Usuario(nome, senha);
                     usuarios.Add(novoUsuario);
                     salvarUsuario(usuarios);
-                    Console.WriteLine("Usuário cadastrado com sucesso!");
+                    Console.WriteLine("\nUsuário cadastrado com sucesso!");
                 }
                 else if (opcao == 3)
                 {
-                    Console.WriteLine("Encerrando o programa...");
+                    Console.WriteLine("\nEncerrando o programa...");
                     System.Environment.Exit(0);
                 }
 
@@ -336,7 +337,7 @@ class Program
                             opcao = 0;
                             do
                             {
-                                MostrarMenuManutencao();
+                                MostrarMenuFabricantes();
                                 opcao = (int)char.GetNumericValue(Console.ReadKey(true).KeyChar);
 
                                 bool verifica = true;
