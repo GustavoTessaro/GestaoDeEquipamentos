@@ -66,7 +66,20 @@ class Program
         Console.WriteLine("---------------------------------");
         Console.WriteLine("1 - Menu Equipamentos");
         Console.WriteLine("2 - Menu Manutenção");
-        Console.WriteLine("3 - Logout");
+        Console.WriteLine("3 - Menu Fabricantes");
+        Console.WriteLine("4 - Logout");
+        Console.WriteLine("---------------------------------");
+    }
+    static void MostrarMenuFabricantes()
+    {
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("Gestão de Fabricantes");
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine("1 - Cadastrar fabricante");
+        Console.WriteLine("2 - Editar fabricante");
+        Console.WriteLine("3 - Excluir fabricante");
+        Console.WriteLine("4 - Visualizar fabricantes");
+        Console.WriteLine("5 - Voltar");
         Console.WriteLine("---------------------------------");
     }
     static bool VoltarMenuInicial()
@@ -192,7 +205,7 @@ class Program
                     opcao = 0;
                     MostrarMenu();
                     opcao = (int)char.GetNumericValue(Console.ReadKey(true).KeyChar);
-                } while (opcao != 1 && opcao != 2 && opcao != 3);
+                } while (opcao != 1 && opcao != 2 && opcao != 3 && opcao != 4);
 
                 if (opcao == 1)
                 {
@@ -318,11 +331,73 @@ class Program
                     {
                         if (opcao == 3)
                         {
-                            Console.WriteLine("Logout realizado com sucesso!");
-                            Thread.Sleep(3000);
-                            while (Console.KeyAvailable) Console.ReadKey(true);
-                            Console.Clear();
-                            repetirMenu = false;
+                            #region MenuFabricantes
+
+                            opcao = 0;
+                            do
+                            {
+                                MostrarMenuManutencao();
+                                opcao = (int)char.GetNumericValue(Console.ReadKey(true).KeyChar);
+
+                                bool verifica = true;
+
+                                switch (opcao)
+                                {
+                                    case 1:
+                                        Console.Clear();
+                                        Console.WriteLine("Cadastrar Fabricante");
+                                        verifica = usuarioLogado.CadastrarFabricante();
+                                        if (verifica == true)
+                                        {
+                                            AtualizarUsuario(usuarioLogado);
+                                        }
+                                        break;
+                                    case 2:
+                                        Console.Clear();
+                                        Console.WriteLine("Editar Fabricante");
+                                        verifica = usuarioLogado.EditarFabricante();
+                                        if (verifica == true)
+                                        {
+                                            AtualizarUsuario(usuarioLogado);
+                                        }
+                                        break;
+                                    case 3:
+                                        Console.Clear();
+                                        Console.WriteLine("Excluir Fabricante");
+                                        verifica = usuarioLogado.ExcluirFabricante();
+                                        if (verifica == true)
+                                        {
+                                            AtualizarUsuario(usuarioLogado);
+                                        }
+                                        break;
+                                    case 4:
+                                        Console.Clear();
+                                        Console.WriteLine("Visualizar Fabricantes");
+                                        usuarioLogado.MostrarFabricantes();
+                                        break;
+                                    case 5:
+                                        Console.Clear();
+                                        break;
+                                    default:
+                                        Console.Clear();
+                                        Console.WriteLine("Opção inválida. Tente novamente.");
+                                        break;
+                                }
+
+                            } while (opcao != 5);
+
+                            #endregion
+                        }
+                        else
+                        {
+                            if (opcao == 4)
+                            {
+                                Console.WriteLine("Logout realizado com sucesso!");
+                                Thread.Sleep(3000);
+                                while (Console.KeyAvailable) Console.ReadKey(true);
+                                Console.Clear();
+                                repetirMenu = false;
+                            }
                         }
                     }
                 }

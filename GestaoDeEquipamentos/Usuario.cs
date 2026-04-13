@@ -1,3 +1,5 @@
+using System.Dynamic;
+
 class Usuario
 {
 
@@ -5,8 +7,8 @@ class Usuario
     private string senha;
 
     private List<Equipamento> equipamentos;
-
     private List<ManutencaoEquipamento> manutencoes;
+    private List<Fabricante> fabricantes;
 
     #region Construtores
     public Usuario(string nome, string senha)
@@ -15,6 +17,7 @@ class Usuario
         this.senha = senha;
         this.equipamentos = new List<Equipamento>();
         this.manutencoes = new List<ManutencaoEquipamento>();
+        this.fabricantes = new List<Fabricante>();
     }
 
     public Usuario()
@@ -23,6 +26,7 @@ class Usuario
         this.senha = "";
         this.equipamentos = new List<Equipamento>();
         this.manutencoes = new List<ManutencaoEquipamento>();
+        this.fabricantes = new List<Fabricante>();
     }
 
     #endregion
@@ -31,9 +35,21 @@ class Usuario
     public string Nome { get => getNome(); set => setNome(value); }
     public string Senha { get => getSenha(); set => setSenha(value); }
     public List<Equipamento> Equipamentos { get => getEquipamentos(); set => setEquipamentos(value); }
+    public List<ManutencaoEquipamento> Manutencoes { get => getManutencoes(); set => setManutencoes(value); }
+    public List<Fabricante> Fabricantes { get => getFabricantes(); set => setFabricantes(value); }
+    public List<Fabricante> getFabricantes()
+    {
+        return fabricantes;
+    }
 
-    public List<ManutencaoEquipamento> Manutencoes { get => manutencoes; set => manutencoes = value; }
-
+    public List<ManutencaoEquipamento> getManutencoes()
+    {
+        return manutencoes;
+    }
+    public void setFabricantes(List<Fabricante> fabricantes)
+    {
+        this.fabricantes = fabricantes;
+    }
     public string getNome()
     {
         return nome;
@@ -77,7 +93,7 @@ class Usuario
         int id = 0;
         string nome = "";
         float preco = 0;
-        string fabricante = "";
+        string NomeFabricante = "";
         DateTime dataFabricacao = DateTime.Now;
 
         bool verifica = true;
@@ -91,7 +107,7 @@ class Usuario
             Console.Write("\nDigite o preço do equipamento: ");
             preco = float.Parse(Console.ReadLine());
             Console.Write("\nDigite o fabricante do equipamento: ");
-            fabricante = Console.ReadLine();
+            NomeFabricante = Console.ReadLine();
             Console.Write("\nDigite a data de fabricação do equipamento (dd/MM/yyyy): ");
             dataFabricacao = DateTime.ParseExact(Console.ReadLine(), "dd/MM/yyyy", null);
         }
@@ -103,7 +119,34 @@ class Usuario
 
         if (verifica == true)
         {
-            Equipamento novoEquipamento = new Equipamento(id, nome, preco, fabricante, dataFabricacao, "Não");
+            bool fabricanteExiste = false;
+
+            foreach (var fabricante in fabricantes)
+            {
+                if (fabricante.getNome() == NomeFabricante)
+                {
+                    fabricante.setQuantidadeEquipamentos(fabricante.getQuantidadeEquipamentos() + 1);
+                    fabricanteExiste = true;
+                    break;
+                }
+            }
+
+            if (fabricanteExiste == false)
+            {
+                Console.WriteLine("Fabricante não encontrado. Deseja Cadastrar o fabricante agora para cadastrar o equipamento? (S/N)");
+                char resposta = char.ToUpper(Console.ReadKey(true).KeyChar);
+                if (resposta == 'S')
+                {
+                    CadastrarFabricante();
+                }
+                else
+                {
+                    Console.WriteLine("Equipamento não cadastrado. O fabricante é necessário para cadastrar o equipamento.");
+                    return false;
+                }
+            }
+
+            Equipamento novoEquipamento = new Equipamento(id, nome, preco, NomeFabricante, dataFabricacao, "Não");
 
             equipamentos.Add(novoEquipamento);
             Console.WriteLine("Equipamento cadastrado com sucesso!");
@@ -217,6 +260,16 @@ class Usuario
 
         if (equipamentoEncontrado != null)
         {
+
+            foreach (var fabricante in fabricantes)
+            {
+                if (fabricante.getNome() == equipamentoEncontrado.getFabricante())
+                {
+                    fabricante.setQuantidadeEquipamentos(fabricante.getQuantidadeEquipamentos() - 1);
+                    break;
+                }
+            }
+
             equipamentos.Remove(equipamentoEncontrado);
             Console.WriteLine("Equipamento excluído com sucesso!");
             return true;
@@ -421,6 +474,180 @@ class Usuario
             }
         }
 
+    }
+
+    #endregion
+
+    #region Métodos para gerenciamento de fabricantes
+
+    public bool CadastrarFabricante()
+    {
+        int id = 0;
+        string nome = "";
+        string email = "";
+        string telefone = "";
+
+        bool verifica = true;
+
+        try
+        {
+            Console.Write("Digite o ID do Fabricante (APENAS NUMEROS): ");
+            id = int.Parse(Console.ReadLine());
+            Console.Write("Digite o nome do fabricante: ");
+            nome = Console.ReadLine();
+            Console.Write("Digite o email do fabricante: ");
+            email = Console.ReadLine();
+            Console.Write("Digite o telefone do fabricante: ");
+            telefone = Console.ReadLine();
+        }
+        catch (System.Exception)
+        {
+            Console.WriteLine("Entrada inválida. Certifique-se de inserir os dados corretamente.");
+            verifica = false;
+        }
+
+        if (verifica == true)
+        {
+            Fabricante novoFabricante = new Fabricante(id, nome, email, telefone);
+
+            fabricantes.Add(novoFabricante);
+            Console.WriteLine("Fabricante cadastrado com sucesso!");
+            return true;
+        }
+        else
+        {
+            Console.WriteLine("Falha ao cadastrar o fabricante. Tente novamente.");
+            return false;
+        }
+    }
+    public bool EditarFabricante()
+    {
+        MostrarFabricantes();
+        Console.Write("\nDigite o ID do fabricante que deseja editar: ");
+        int id = int.Parse(Console.ReadLine());
+
+        Fabricante fabricanteEncontrado = null;
+        foreach (var fabricante in fabricantes)
+        {
+            if (fabricante.getId() == id)
+            {
+                fabricanteEncontrado = fabricante;
+                break;
+            }
+        }
+
+        if (fabricanteEncontrado != null)
+        {
+            bool verifica = true;
+
+            string nome = "";
+            string email = "";
+            string telefone = "";
+
+            try
+            {
+                Console.Write("Digite o novo nome do fabricante: ");
+                nome = Console.ReadLine();
+                Console.Write("Digite o novo email do fabricante: ");
+                email = Console.ReadLine();
+                Console.Write("Digite o novo telefone do fabricante: ");
+                telefone = Console.ReadLine();
+            }
+            catch (System.Exception)
+            {
+                Console.WriteLine("Entrada inválida. Certifique-se de inserir os dados corretamente.");
+                verifica = false;
+            }
+
+            if (verifica == true)
+            {
+                fabricanteEncontrado.setNome(nome);
+                fabricanteEncontrado.setEmail(email);
+                fabricanteEncontrado.setTelefone(telefone);
+
+                Console.WriteLine("Fabricante editado com sucesso!");
+
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Falha ao editar o fabricante. Tente novamente.");
+                return false;
+            }
+
+        }
+        else
+        {
+            Console.WriteLine("Fabricante não encontrado.");
+            return false;
+        }
+    }
+    public bool ExcluirFabricante()
+    {
+        MostrarFabricantes();
+        Console.Write("\nDigite o ID do fabricante que deseja excluir: ");
+        int id = int.Parse(Console.ReadLine());
+
+        Fabricante fabricanteEncontrado = null;
+
+        foreach (var fabricante in fabricantes)
+        {
+            if (fabricante.getId() == id)
+            {
+                fabricanteEncontrado = fabricante;
+
+                break;
+            }
+        }
+
+        if (fabricanteEncontrado != null)
+        {
+
+            Console.WriteLine($"ATENÇÃO: O fabricante '{fabricanteEncontrado.getNome()}' possui {fabricanteEncontrado.getQuantidadeEquipamentos()} equipamentos associados. Excluir o fabricante também excluirá esses equipamentos. Deseja continuar? (S/N)");
+            char resposta = char.ToUpper(Console.ReadKey(true).KeyChar);
+
+            if (resposta == 'S')
+            {
+                //ToList() ele faz uma copia da lista original, permitindo que seja modificado como por exemplo removendo o equipamento sem causar erros durante a remoção
+                foreach (var equipamento in equipamentos.ToList())
+                {
+                    if (equipamento.getFabricante() == fabricanteEncontrado.getNome())
+                    {
+                        equipamentos.Remove(equipamento);
+                    }
+                }
+
+                fabricantes.Remove(fabricanteEncontrado);
+                Console.WriteLine("Fabricante excluído com sucesso!");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Exclusão cancelada.");
+                return false;
+            }
+
+        }
+        else
+        {
+            Console.WriteLine("Fabricante não encontrado.");
+            return false;
+        }
+    }
+    public void MostrarFabricantes()
+    {
+        if (fabricantes.Count == 0)
+        {
+            Console.WriteLine("Nenhum fabricante registrado.");
+        }
+        else
+        {
+            Console.WriteLine("Fabricantes registrados:");
+            foreach (var fabricante in fabricantes)
+            {
+                Console.WriteLine($"ID: {fabricante.getId()}, Nome: {fabricante.getNome()}, Email: {fabricante.getEmail()}, Telefone: {fabricante.getTelefone()}, Quantidade de Equipamentos: {fabricante.getQuantidadeEquipamentos()}");
+            }
+        }
     }
 
     #endregion
