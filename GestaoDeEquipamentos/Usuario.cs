@@ -491,7 +491,7 @@ class Usuario
 
         try
         {
-            Console.Write("Digite o ID do Fabricante (APENAS NUMEROS): ");
+            Console.Write("\nDigite o ID do Fabricante (APENAS NUMEROS): ");
             id = int.Parse(Console.ReadLine());
             Console.Write("O nome do fabricante: " + nomeFabricante);
             Console.Write("Digite o email do fabricante: ");
