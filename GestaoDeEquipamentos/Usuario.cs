@@ -137,7 +137,7 @@ class Usuario
                 char resposta = char.ToUpper(Console.ReadKey(true).KeyChar);
                 if (resposta == 'S')
                 {
-                    CadastrarFabricante();
+                    CadastrarFabricanteEquipamento(NomeFabricante);
                 }
                 else
                 {
@@ -480,6 +480,45 @@ class Usuario
 
     #region Métodos para gerenciamento de fabricantes
 
+    public bool CadastrarFabricanteEquipamento(string nomeFabricante)
+    {
+        int id = 0;
+        string nome = nomeFabricante;
+        string email = "";
+        string telefone = "";
+
+        bool verifica = true;
+
+        try
+        {
+            Console.Write("Digite o ID do Fabricante (APENAS NUMEROS): ");
+            id = int.Parse(Console.ReadLine());
+            Console.Write("O nome do fabricante: " + nomeFabricante);
+            Console.Write("Digite o email do fabricante: ");
+            email = Console.ReadLine();
+            Console.Write("Digite o telefone do fabricante: ");
+            telefone = Console.ReadLine();
+        }
+        catch (System.Exception)
+        {
+            Console.WriteLine("Entrada inválida. Certifique-se de inserir os dados corretamente.");
+            verifica = false;
+        }
+
+        if (verifica == true)
+        {
+            Fabricante novoFabricante = new Fabricante(id, nome, email, telefone);
+
+            fabricantes.Add(novoFabricante);
+            Console.WriteLine("Fabricante cadastrado com sucesso!");
+            return true;
+        }
+        else
+        {
+            Console.WriteLine("Falha ao cadastrar o fabricante. Tente novamente.");
+            return false;
+        }
+    }
     public bool CadastrarFabricante()
     {
         int id = 0;
